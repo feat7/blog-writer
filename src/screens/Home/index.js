@@ -24,11 +24,21 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <Editor
-        ref="editor"
-        editorState={this.state.editorState}
-        onChange={this.onChange}
-      />
+      <div>
+        <div className="hero">
+          <div className="hero-body">
+            <div className="container">
+              <div className="content">
+                <Editor
+                  ref="editor"
+                  editorState={this.state.editorState}
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
