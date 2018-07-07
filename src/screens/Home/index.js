@@ -248,10 +248,23 @@ export default class HomeScreen extends Component {
                             <span className="icon">
                               {(() => {
                                 if (this.state.sentiment === "positive")
-                                  return <i className="far fa-smile" />;
+                                  return (
+                                    <span>
+                                      Positive <i className="far fa-smile" />
+                                    </span>
+                                  );
                                 if (this.state.sentiment === "neutral")
-                                  return <i className="far fa-neutral" />;
-                                else return <i className="far fa-frawn" />;
+                                  return (
+                                    <span>
+                                      Neutral <i className="far fa-neutral" />
+                                    </span>
+                                  );
+                                else
+                                  return (
+                                    <span>
+                                      Negative <i className="far fa-frawn" />
+                                    </span>
+                                  );
                               })()}
                             </span>
                           </p>
