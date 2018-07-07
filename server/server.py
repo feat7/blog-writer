@@ -19,3 +19,13 @@ def get_sentiment():
     response = requests.post("https://apis.paralleldots.com/v3/sentiment", data = data)
     response = response.json()
     return jsonify(response)
+
+@app.route("/")
+@cross_origin()
+def index():
+    data = {
+        "Team Name": "ShaktiMaan",
+        "Category": "BlockChain, ML",
+        "Hackathon": "Rajasthan Online Hackathon"
+    }
+    return jsonify(data)
