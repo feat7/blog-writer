@@ -4,10 +4,20 @@ import { GetSortOrder } from "../../helpers/Sort";
 import { GridLoader } from "react-spinners";
 import { Editor, createEditorState } from "medium-draft";
 import { convertToRaw, EditorState } from "draft-js";
+import { getDefaultKeyBinding, KeyBindingUtil } from "draft-js";
 
 // import mediumDraftExporter from "medium-draft/lib/exporter";
 
 let editorData = createEditorState();
+
+const { hasCommandModifier } = KeyBindingUtil;
+
+function myKeyBindingFn(e: SyntheticKeyboardEvent): string {
+  if (e.keyCode === 83 /* `S` key */ && hasCommandModifier(e)) {
+    return "myeditor-save";
+  }
+  return getDefaultKeyBinding(e);
+}
 
 @inject("store", "gun")
 @observer
@@ -32,18 +42,7 @@ export default class HomeScreen extends Component {
       this.setState({
         editorState
       });
-
       this.props.store.ui.editorState = editorState;
-
-      // this.props.store.ui.editorContent = convertToRaw(
-      //   this.props.store.ui.editorState.getCurrentContent()
-      // );
-
-      // this.setState({
-      //   editorState: createEditorState(JSON.parse(data))
-      // });
-
-      // this.setState({ editorState: createEditorState(JSON.parse(editorData)) });
     };
 
     this.clearTopTen = this.clearTopTen.bind(this);
@@ -51,6 +50,17 @@ export default class HomeScreen extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.suggestKeywords = this.suggestKeywords.bind(this);
     this.saveBlog = this.saveBlog.bind(this);
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+  }
+
+  handleKeyCommand(command: string): DraftHandleValue {
+    if (command === "myeditor-save") {
+      // Perform a request to save your contents, set
+      // a new `editorState`, etc.
+      this.saveBlog();
+      return "handled";
+    }
+    return "not-handled";
   }
 
   saveBlog() {
@@ -199,6 +209,8 @@ export default class HomeScreen extends Component {
                             this.props.store.ui.editorState,
                             this.props.store.ui.editorState.getSelection()
                           )}
+                          handleKeyCommand={this.handleKeyCommand}
+                          keyBindingFn={myKeyBindingFn}
                           onChange={this.onChange}
                         />
                       </div>
