@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import "../../styles/home.css";
 import { GetSortOrder } from "../../helpers/Sort";
 
 import { Editor, createEditorState } from "medium-draft";
@@ -115,9 +114,14 @@ export default class HomeScreen extends Component {
       .get("blogContent")
       .on((data, key) => (editorData = data.blogContent));
 
-    this.setState({
-      editorState: createEditorState(JSON.parse(editorData))
-    });
+    try {
+      JSON.parse(editorData);
+      this.setState({
+        editorState: createEditorState(JSON.parse(editorData))
+      });
+    } catch (e) {
+      console.log("Initial db");
+    }
   }
 
   componentDidMount() {
