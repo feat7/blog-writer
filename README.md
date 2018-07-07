@@ -45,8 +45,8 @@ Please submit pull requests for contributions. And contributions are always welc
 
 * **Vinay Khobragade** - [feat7](https://github.com/feat7)
 * **Kuldeep Pisda** - [kdpisda](https://github.com/kdpisda)
-* **Mayank Chourasia** - [feat7](https://github.com/mayank2498)
-* **Subhash Kshatri** - [feat7](https://github.com/Subhash1998)
+* **Mayank Chourasia** - [mayank2498](https://github.com/mayank2498)
+* **Subhash Kshatri** - [Subhash1998](https://github.com/Subhash1998)
 
 ## License
 
