@@ -157,22 +157,32 @@ export default class HomeScreen extends Component {
                 </div>
               </div>
               <div className="column" style={{ borderLeftWidth: 1 }}>
-                <div className="box">Word Count: {this.state.wordCount}</div>
+                <div className="box">
+                  Word Count:{" "}
+                  {
+                    this.state.editorState
+                      .getCurrentContent()
+                      .getPlainText(" ")
+                      .split(" ").length
+                  }
+                </div>
                 <div className="box">
                   Find Keywords
-                  <div className="input-group">
-                    <input
-                      name="keyword"
-                      type="text"
-                      className="form-control"
-                      placeholder="Type a Keyword"
-                      aria-label="Recipient's username"
-                      aria-describedby="basic-addon2"
-                      onChange={this.handleChange}
-                    />
-                    <div className="input-group-append">
+                  <div className="field is-grouped">
+                    <div className="control">
+                      <input
+                        name="keyword"
+                        type="text"
+                        className="input"
+                        placeholder="Type a Keyword"
+                        aria-label="Recipient's username"
+                        aria-describedby="basic-addon2"
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                    <div className="control">
                       <button
-                        className="button is-outlined"
+                        className="button is-primary"
                         type="button"
                         onClick={this.suggestKeywords}
                       >
