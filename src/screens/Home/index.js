@@ -34,6 +34,7 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <div className="container">
         <div className="row">
           <div className="col-8">
@@ -41,6 +42,14 @@ export default class HomeScreen extends Component {
               <div className="hero-body">
                 <div className="container">
                   Total words: {this.state.wordCount}
+=======
+      <div>
+        <div className="hero">
+          <div className="hero-body">
+            <div className="columns">
+              <div className="column is-10 has-text-centered">
+                <div className="container">
+>>>>>>> ef9f612a4875eaa3b42ef8d4e3fda2537d95779a
                   <div className="content">
                     <Editor
                       ref="editor"
@@ -50,12 +59,21 @@ export default class HomeScreen extends Component {
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
             </div>
           </div>
           <div className="col-4">
             <div className="card">
               <div className="card-body">
                 Hello World
+=======
+              <div className="column" style={{ borderLeftWidth: 1 }}>
+                <div className="box">
+                  Keywords:
+                  <br />
+                  Word Count: {this.state.wordCount}
+                </div>
+>>>>>>> ef9f612a4875eaa3b42ef8d4e3fda2537d95779a
               </div>
             </div>
           </div>
