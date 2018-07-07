@@ -44,6 +44,16 @@ flask run
 
 Both application must run on seperate terminal. This application are developed and tested in Ubuntu 18.04, Ubuntu 16.04. So we need to verify the same for other platforms.
 
+### Creating a peer server
+
+Example GUN super-peer (server) that can be installed on Heroku.
+
+It is used in the `Hello World` example here: [https://gun.eco/docs/Hello-World](https://gun.eco/docs/Hello-World)
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+
+
 ## Running the tests
 
 `yarn run test`
