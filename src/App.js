@@ -14,7 +14,7 @@ const history = syncHistoryWithStore(browserHistory, store.routing);
 class App extends Component {
   constructor() {
     super();
-    this.gun = Gun(window.location.origin + "/gun");
+    this.gun = Gun("http://p2p-app-gun.herokuapp.com/gun");
   }
   render() {
     return (
