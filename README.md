@@ -16,7 +16,8 @@ And we came up with this.
 ```
 git clone https://github.com/feat7/blog-writer.git
 cd blog-writer
-yarn OR npm install yarn start
+yarn OR npm install
+yarn start
 ```
 
 ### Prerequisites
