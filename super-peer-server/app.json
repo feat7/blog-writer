@@ -1,0 +1,8 @@
+{
+  "name": "gun-super-peer-example",
+  "description": "Example GUN super-peer (server) that can be installed on Heroku.",
+  "repository": "https://github.com/gundb/gun-super-peer-example",
+  "logo": "https://gun.eco/images/gun_logo-01.svg",
+  "keywords": ["gun", "node", "heroku"],
+  "image": "heroku/nodejs"
+}

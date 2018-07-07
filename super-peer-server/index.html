@@ -1,0 +1,25 @@
+<html>
+  <body>
+    <h1>Hello</h1>
+    What is your name?<br>
+    <form><input><button>Submit</button></form>
+
+    <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+      var gun = Gun(location.origin + '/gun')
+
+      $('form').on('submit', function (event) {
+        var input = $('form').find('input')
+        gun.get('hello').put({ name: input.val() });
+        input.val('')
+        event.preventDefault()
+      })
+
+      gun.get('hello').on(function(data, key) {
+        var h1 = $('h1')
+        h1.text('Hello ' + data.name)
+      })
+    </script>
+  </body>
+</html>
