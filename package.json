@@ -1,6 +1,6 @@
 {
   "name": "blog-writer-react",
-  "homepage": "http://feat7.github.io/blog-writer-react",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
