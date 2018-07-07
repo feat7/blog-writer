@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { GetSortOrder } from "../../helpers/Sort";
-
+import { GridLoader } from 'react-spinners';
 import { Editor, createEditorState } from "medium-draft";
 import { convertToRaw } from "draft-js";
 
@@ -21,8 +21,11 @@ export default class HomeScreen extends Component {
       keyword: "",
       suggestedKeywords: [],
       topTenKeywords: [],
-      isLoaded: false,
-      filterMode: "cpc"
+      areKeywordsLoading: true,
+      postAnalysisInProgress: true,
+      filterMode: "cpc",
+      sentiment: 'neutral',
+      metaDescription: '',
     };
 
     this.onChange = editorState => {
@@ -40,6 +43,7 @@ export default class HomeScreen extends Component {
     };
 
     this.clearTopTen = this.clearTopTen.bind(this);
+    this.analyzePost = this.analyzePost.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.suggestKeywords = this.suggestKeywords.bind(this);
     this.saveBlog = this.saveBlog.bind(this);
@@ -68,6 +72,8 @@ export default class HomeScreen extends Component {
       });
   }
 
+  
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
     if (event.target.name === "filterMode") {
@@ -79,6 +85,7 @@ export default class HomeScreen extends Component {
   }
 
   suggestKeywords(event) {
+    this.setState({areKeywordsLoading: true});
     var url =
       "https://dk1ecw0kik.execute-api.us-east-1.amazonaws.com/prod/query?query=" +
       this.state.keyword +
@@ -88,7 +95,7 @@ export default class HomeScreen extends Component {
       .then(
         result => {
           this.setState({
-            isLoaded: true,
+            areKeywordsLoading: false,
             suggestedKeywords: result.results.processed_keywords
           });
           console.log(this.state.suggestedKeywords);
@@ -104,7 +111,32 @@ export default class HomeScreen extends Component {
         // exceptions from actual bugs in components.
         error => {
           this.setState({
-            isLoaded: true,
+            areKeywordsLoading: false,
+            error
+          });
+        }
+      );
+  }
+
+  analyzePost(){
+    this.setState({postAnalysisInProgress:true});
+    var url = 'http://localhost:5000/sentiment?text=' + this.state.editorState.getCurrentContent().getPlainText();
+    fetch(url)
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            postAnalysisInProgress:false,
+            sentiment: result.sentiment
+          });
+          console.log(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        error => {
+          this.setState({
+            postAnalysisInProgress: false,
             error
           });
         }
@@ -134,12 +166,14 @@ export default class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    this.setState({areKeywordsLoading: false});
+    this.setState({postAnalysisInProgress: false});
     this.refs.editor.focus();
   }
 
   render() {
     var keywordsList = this.state.topTenKeywords.map((keyword, index) => (
-      <li key={index}>{keyword.keyword}</li>
+      <span className="tag is-success">{keyword.keyword}</span>
     ));
     return (
       <div>
@@ -149,24 +183,19 @@ export default class HomeScreen extends Component {
               <div className="column has-text-centered">
                 <div className="container">
                   <div className="columns">
-                    <div className="column is-two-thirds">
+                    <div className="column is-three-fifths">
                       <div className="content">
                         <Editor
                           ref="editor"
                           editorState={this.props.store.ui.editorState}
                           onChange={this.onChange}
                         />
-                        <button
-                          className="button is-primary is-large is-rounded"
-                          onClick={this.saveBlog}
-                        >
-                          Save
-                        </button>
                       </div>
                     </div>
-                    <div className="column is-one-third">
+                    <div className="column is-two-fifths">
                       <div className="column" style={{ borderLeftWidth: 1 }}>
                         <div className="box">
+                          <h3 className="title">
                           Word Count:{" "}
                           {
                             this.state.editorState
@@ -174,9 +203,46 @@ export default class HomeScreen extends Component {
                               .getPlainText(" ")
                               .split(" ").length
                           }
+                          </h3>
+                          <button
+                            className="button is-primary is-rounded"
+                            onClick={this.saveBlog}
+                          >
+                            Save Content
+                          </button>
                         </div>
                         <div className="box">
-                          Find Keywords
+                          <h3 className="title">Sentiment Analysis</h3>
+                          <button
+                           className="button is-primary is-rounded"
+                           type="button"
+                           onClick={this.analyzePost}
+                          >
+                            Perform Sentiment Analysis
+                          </button>
+                          <p>
+                            Sentiment: 
+                            <span className="icon">
+                              {
+                                (() => {
+                                    if(this.state.sentiment === 'positive')
+                                      return (<i className="far fa-smile"></i>)
+                                    if(this.state.sentiment === 'neutral')
+                                      return (<i className="far fa-neutral"></i>)
+                                    else
+                                      return (<i className="far fa-frawn"></i>)
+                                })()
+                              }
+                            </span>
+                          </p>
+                          <center>
+                            <GridLoader
+                              loading={this.state.postAnalysisInProgress}
+                            />
+                          </center>
+                        </div>
+                        <div className="box">
+                          <h2 className="title">Find Keywords</h2>
                           <div className="field is-grouped">
                             <div className="control">
                               <input
@@ -201,8 +267,9 @@ export default class HomeScreen extends Component {
                           </div>
                           Total Suggested Keywords:{" "}
                           {this.state.suggestedKeywords.length}
+                          <br />
                           <button
-                            className="button is-primary"
+                            className="button is-primary is-rounded"
                             type="button"
                             onClick={this.clearTopTen}
                           >
@@ -256,8 +323,14 @@ export default class HomeScreen extends Component {
                               </div>
                             </div>
                           </div>
-                          <br />
-                          <ol>{keywordsList}</ol>
+                          <center>
+                            <GridLoader
+                              loading={this.state.areKeywordsLoading}
+                            />
+                          </center>
+                          <div className="tags">
+                            {keywordsList}
+                          </div>
                         </div>
                       </div>
                     </div>
