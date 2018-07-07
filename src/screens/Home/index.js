@@ -40,7 +40,6 @@ export default class HomeScreen extends Component {
             <div className="columns">
               <div className="column is-10 has-text-centered">
                 <div className="container">
-                  Total words: {this.state.wordCount}
                   <div className="content">
                     <Editor
                       ref="editor"
@@ -51,7 +50,11 @@ export default class HomeScreen extends Component {
                 </div>
               </div>
               <div className="column" style={{ borderLeftWidth: 1 }}>
-                Word Count
+                <div className="box">
+                  Keywords:
+                  <br />
+                  Word Count: {this.state.wordCount}
+                </div>
               </div>
             </div>
           </div>
