@@ -37,14 +37,21 @@ export default class HomeScreen extends Component {
       <div>
         <div className="hero">
           <div className="hero-body">
-            <div className="container">
-              Total words: {this.state.wordCount - 1}
-              <div className="content">
-                <Editor
-                  ref="editor"
-                  editorState={this.state.editorState}
-                  onChange={this.onChange}
-                />
+            <div className="columns">
+              <div className="column is-10 has-text-centered">
+                <div className="container">
+                  Total words: {this.state.wordCount}
+                  <div className="content">
+                    <Editor
+                      ref="editor"
+                      editorState={this.state.editorState}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="column" style={{ borderLeftWidth: 1 }}>
+                Word Count
               </div>
             </div>
           </div>
