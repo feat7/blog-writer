@@ -137,7 +137,7 @@ export default class HomeScreen extends Component {
   analyzePost() {
     this.setState({ postAnalysisInProgress: true });
     var url =
-      "http://localhost:5000/sentiment?text=" +
+      "http://18.216.67.79:8000/sentiment?text=" +
       this.state.editorState.getCurrentContent().getPlainText();
     fetch(url)
       .then(res => res.json())
@@ -250,8 +250,8 @@ export default class HomeScreen extends Component {
                                 if (this.state.sentiment === "positive")
                                   return <i className="far fa-smile" />;
                                 if (this.state.sentiment === "neutral")
-                                  return <i className="far fa-neutral" />;
-                                else return <i className="far fa-frawn" />;
+                                  return <i className="far fa-meh" />;
+                                else return <i className="far fa-frown" />;
                               })()}
                             </span>
                           </p>
