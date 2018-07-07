@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { GetSortOrder } from "../../helpers/Sort";
-
+import { GridLoader } from 'react-spinners';
 import { Editor, createEditorState } from "medium-draft";
 import { convertToRaw } from "draft-js";
 
@@ -21,7 +21,7 @@ export default class HomeScreen extends Component {
       keyword: "",
       suggestedKeywords: [],
       topTenKeywords: [],
-      isLoaded: false,
+      isLoading: true,
       filterMode: "cpc"
     };
 
@@ -79,6 +79,7 @@ export default class HomeScreen extends Component {
   }
 
   suggestKeywords(event) {
+    this.setState({isLoading: true});
     var url =
       "https://dk1ecw0kik.execute-api.us-east-1.amazonaws.com/prod/query?query=" +
       this.state.keyword +
@@ -88,7 +89,7 @@ export default class HomeScreen extends Component {
       .then(
         result => {
           this.setState({
-            isLoaded: true,
+            isLoading: false,
             suggestedKeywords: result.results.processed_keywords
           });
           console.log(this.state.suggestedKeywords);
@@ -104,7 +105,7 @@ export default class HomeScreen extends Component {
         // exceptions from actual bugs in components.
         error => {
           this.setState({
-            isLoaded: true,
+            isLoading: false,
             error
           });
         }
@@ -131,6 +132,7 @@ export default class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    this.setState({isLoading: false});
     this.refs.editor.focus();
   }
 
@@ -254,6 +256,11 @@ export default class HomeScreen extends Component {
                             </div>
                           </div>
                           <br />
+                          <div className="has-text-centered">
+                            <GridLoader
+                              loading={this.state.isLoading}
+                            />
+                          </div>
                           <ol>{keywordsList}</ol>
                         </div>
                       </div>
