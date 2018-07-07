@@ -3,12 +3,11 @@ import { inject, observer } from "mobx-react";
 import { GetSortOrder } from "../../helpers/Sort";
 
 import { Editor, createEditorState } from "medium-draft";
-import { convertToRaw, convertFromRaw } from "draft-js";
+import { convertToRaw } from "draft-js";
 
 // import mediumDraftExporter from "medium-draft/lib/exporter";
 
-let editorData = createEditorState(),
-  wordCount;
+let editorData = createEditorState();
 
 @inject("store", "gun")
 @observer
@@ -110,8 +109,8 @@ export default class HomeScreen extends Component {
       );
   }
 
-  clearTopTen(){
-    this.setState({topTenKeywords: []});
+  clearTopTen() {
+    this.setState({ topTenKeywords: [] });
   }
 
   componentWillMount() {
@@ -135,9 +134,7 @@ export default class HomeScreen extends Component {
 
   render() {
     var keywordsList = this.state.topTenKeywords.map((keyword, index) => (
-      <li key={index}>
-        {keyword.keyword}
-      </li>
+      <li key={index}>{keyword.keyword}</li>
     ));
     return (
       <div>
@@ -164,52 +161,101 @@ export default class HomeScreen extends Component {
                     </div>
                     <div className="column is-one-third">
                       <div className="column" style={{ borderLeftWidth: 1 }}>
-                          <div className="box">
-                              Word Count:{" "} { this.state.editorState .getCurrentContent() .getPlainText(" ") .split(" ").length }
-                          </div>
-                          <div className="box">
-                              Find Keywords
-                              <div className="field is-grouped">
-                                  <div className="control">
-                                      <input name="keyword" type="text" className="input" placeholder="Type a Keyword" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={this.handleChange} />
-                                  </div>
-                                  <div className="control">
-                                      <button className="button is-primary" type="button" onClick={this.suggestKeywords}>
-                                          Search
-                                      </button>
-                                  </div>
-                              </div>
-                              Total Suggested Keywords:{" "} {this.state.suggestedKeywords.length}
-                              <button className="button is-primary" type="button" onClick={this.clearTopTen}>
-                                Clear Results
+                        <div className="box">
+                          Word Count:{" "}
+                          {
+                            this.state.editorState
+                              .getCurrentContent()
+                              .getPlainText(" ")
+                              .split(" ").length
+                          }
+                        </div>
+                        <div className="box">
+                          Find Keywords
+                          <div className="field is-grouped">
+                            <div className="control">
+                              <input
+                                name="keyword"
+                                type="text"
+                                className="input"
+                                placeholder="Type a Keyword"
+                                aria-label="Recipient's username"
+                                aria-describedby="basic-addon2"
+                                onChange={this.handleChange}
+                              />
+                            </div>
+                            <div className="control">
+                              <button
+                                className="button is-primary"
+                                type="button"
+                                onClick={this.suggestKeywords}
+                              >
+                                Search
                               </button>
-                              <br />
-                              <p>Filter Keywords on the basis of  </p>
-                              <div className="columns">
-                                  <div className="column is-one-quarter">
-                                      <div className="form-check">
-                                          <input className="form-check-input" type="radio" name="filterMode" id="cpc" value="cpc" defaultChecked onChange={this.handleChange} />
-                                          <label className="form-check-label">CPC</label>
-                                      </div>
-                                  </div>
-                                  <div className="column is-one-quarter">
-                                      <div className="form-check">
-                                          <input className="form-check-input" type="radio" name="filterMode" id="volume" value="Volume" onChange={this.handleChange} />
-                                          <label className="form-check-label">Volume</label>
-                                      </div>
-                                  </div>
-                                  <div className="column is-half">
-                                      <div className="form-check">
-                                          <input className="form-check-input" type="radio" name="filterMode" id="competition" value="Competition" onChange={this.handleChange} />
-                                          <label className="form-check-label">Competition</label>
-                                      </div>
-                                  </div>
-                              </div>
-                              <br />
-                              <ol>{keywordsList}</ol>
+                            </div>
                           </div>
+                          Total Suggested Keywords:{" "}
+                          {this.state.suggestedKeywords.length}
+                          <button
+                            className="button is-primary"
+                            type="button"
+                            onClick={this.clearTopTen}
+                          >
+                            Clear Results
+                          </button>
+                          <br />
+                          <p>Filter Keywords on the basis of </p>
+                          <div className="columns">
+                            <div className="column is-one-quarter">
+                              <div className="form-check">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  name="filterMode"
+                                  id="cpc"
+                                  value="cpc"
+                                  defaultChecked
+                                  onChange={this.handleChange}
+                                />
+                                <label className="form-check-label">CPC</label>
+                              </div>
+                            </div>
+                            <div className="column is-one-quarter">
+                              <div className="form-check">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  name="filterMode"
+                                  id="volume"
+                                  value="Volume"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="form-check-label">
+                                  Volume
+                                </label>
+                              </div>
+                            </div>
+                            <div className="column is-half">
+                              <div className="form-check">
+                                <input
+                                  className="form-check-input"
+                                  type="radio"
+                                  name="filterMode"
+                                  id="competition"
+                                  value="Competition"
+                                  onChange={this.handleChange}
+                                />
+                                <label className="form-check-label">
+                                  Competition
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <br />
+                          <ol>{keywordsList}</ol>
+                        </div>
                       </div>
-                  </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -220,4 +266,3 @@ export default class HomeScreen extends Component {
     );
   }
 }
-
