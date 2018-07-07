@@ -8,7 +8,10 @@ class UIStore {
   @observable firstName = "Vinay";
   @observable lastName = "Khobragade";
 
-  @observable editorState = this.props.gun.get("blogContent").blogContent;
+  @observable
+  editorState = createEditorState(
+    JSON.stringify(this.props.gun.get("blogContent").blogContent)
+  );
   @observable edited = "no";
 
   @computed
