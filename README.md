@@ -13,7 +13,11 @@ And we came up with this.
 
 ## Getting Started
 
-`git clone https://github.com/feat7/blog-writer.git cd blog-writer yarn OR npm install yarn start`
+```
+git clone https://github.com/feat7/blog-writer.git
+cd blog-writer
+yarn OR npm install yarn start
+```
 
 ### Prerequisites
 
@@ -43,7 +47,9 @@ Both application must run on seperate terminal. This application are developed a
 
 `yarn run test`
 
-## Screenshots
+## Screenshots and Video
+
+[Watch Video here](https://www.youtube.com/watch?v=GmT5alCzM3o)
 
 ![Blog Writer Keywords](/screenshots/blog-writer.png?raw=true "Blog Writer - Keywords")
 ![Blog Writer Editor](/screenshots/blog-writer-2.png?raw=true "Blog Writer - Editor")
