@@ -7,6 +7,7 @@ import { inject } from "mobx-react";
 @inject("store")
 export default class MainRoutes extends React.Component {
   render() {
+    console.log("Inside MainRoutes");
     return (
       <div>
         <Switch>
