@@ -34,17 +34,28 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <div>
-        <div className="hero">
-          <div className="hero-body">
-            <div className="container">
-              Total words: {this.state.wordCount}
-              <div className="content">
-                <Editor
-                  ref="editor"
-                  editorState={this.state.editorState}
-                  onChange={this.onChange}
-                />
+      <div className="container">
+        <div className="row">
+          <div className="col-8">
+            <div className="hero">
+              <div className="hero-body">
+                <div className="container">
+                  Total words: {this.state.wordCount}
+                  <div className="content">
+                    <Editor
+                      ref="editor"
+                      editorState={this.state.editorState}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="card">
+              <div className="card-body">
+                Hello World
               </div>
             </div>
           </div>
