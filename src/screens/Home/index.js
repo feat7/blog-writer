@@ -30,6 +30,8 @@ export default class HomeScreen extends Component {
         editorState
       });
 
+      this.props.store.ui.editorState = editorState;
+
       // this.setState({
       //   editorState: createEditorState(JSON.parse(data))
       // });
@@ -123,6 +125,9 @@ export default class HomeScreen extends Component {
       this.setState({
         editorState: createEditorState(JSON.parse(editorData))
       });
+      this.props.store.ui.editorState = createEditorState(
+        JSON.parse(editorData)
+      );
     } catch (e) {
       console.log("Initial db");
     }
@@ -148,7 +153,7 @@ export default class HomeScreen extends Component {
                       <div className="content">
                         <Editor
                           ref="editor"
-                          editorState={this.state.editorState}
+                          editorState={this.props.store.ui.editorState}
                           onChange={this.onChange}
                         />
                         <button
