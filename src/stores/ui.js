@@ -1,5 +1,6 @@
 import { observable, computed } from "mobx";
 import { createEditorState } from "medium-draft";
+import { convertToRaw } from "draft-js";
 import { inject } from "mobx-react";
 // import { persist } from "mobx-persist";
 
@@ -12,6 +13,9 @@ class UIStore {
   editorState = createEditorState(
     JSON.stringify(this.props.gun.get("blogContent").blogContent)
   );
+  @observable
+  editorContent = convertToRaw(this.editorState.getCurrentContent());
+
   @observable edited = "no";
 
   @computed

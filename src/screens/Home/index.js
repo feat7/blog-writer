@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { GetSortOrder } from "../../helpers/Sort";
-import { GridLoader } from 'react-spinners';
+import { GridLoader } from "react-spinners";
 import { Editor, createEditorState } from "medium-draft";
-import { convertToRaw } from "draft-js";
+import { convertToRaw, EditorState } from "draft-js";
 
 // import mediumDraftExporter from "medium-draft/lib/exporter";
 
@@ -24,8 +24,8 @@ export default class HomeScreen extends Component {
       areKeywordsLoading: true,
       postAnalysisInProgress: true,
       filterMode: "cpc",
-      sentiment: 'neutral',
-      metaDescription: '',
+      sentiment: "neutral",
+      metaDescription: ""
     };
 
     this.onChange = editorState => {
@@ -34,6 +34,10 @@ export default class HomeScreen extends Component {
       });
 
       this.props.store.ui.editorState = editorState;
+
+      // this.props.store.ui.editorContent = convertToRaw(
+      //   this.props.store.ui.editorState.getCurrentContent()
+      // );
 
       // this.setState({
       //   editorState: createEditorState(JSON.parse(data))
@@ -69,10 +73,12 @@ export default class HomeScreen extends Component {
             .getCurrentContent()
             .getPlainText(" ")
         );
+        this.props.store.ui.editorState = createEditorState(JSON.parse(data));
+        this.setState({
+          editorState: this.props.store.ui.editorState
+        });
       });
   }
-
-  
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -85,7 +91,7 @@ export default class HomeScreen extends Component {
   }
 
   suggestKeywords(event) {
-    this.setState({areKeywordsLoading: true});
+    this.setState({ areKeywordsLoading: true });
     var url =
       "https://dk1ecw0kik.execute-api.us-east-1.amazonaws.com/prod/query?query=" +
       this.state.keyword +
@@ -118,15 +124,17 @@ export default class HomeScreen extends Component {
       );
   }
 
-  analyzePost(){
-    this.setState({postAnalysisInProgress:true});
-    var url = 'http://localhost:5000/sentiment?text=' + this.state.editorState.getCurrentContent().getPlainText();
+  analyzePost() {
+    this.setState({ postAnalysisInProgress: true });
+    var url =
+      "http://localhost:5000/sentiment?text=" +
+      this.state.editorState.getCurrentContent().getPlainText();
     fetch(url)
       .then(res => res.json())
       .then(
         result => {
           this.setState({
-            postAnalysisInProgress:false,
+            postAnalysisInProgress: false,
             sentiment: result.sentiment
           });
           console.log(result);
@@ -166,8 +174,8 @@ export default class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    this.setState({areKeywordsLoading: false});
-    this.setState({postAnalysisInProgress: false});
+    this.setState({ areKeywordsLoading: false });
+    this.setState({ postAnalysisInProgress: false });
     this.refs.editor.focus();
   }
 
@@ -187,7 +195,10 @@ export default class HomeScreen extends Component {
                       <div className="content">
                         <Editor
                           ref="editor"
-                          editorState={this.props.store.ui.editorState}
+                          editorState={EditorState.acceptSelection(
+                            this.props.store.ui.editorState,
+                            this.props.store.ui.editorState.getSelection()
+                          )}
                           onChange={this.onChange}
                         />
                       </div>
@@ -196,13 +207,13 @@ export default class HomeScreen extends Component {
                       <div className="column" style={{ borderLeftWidth: 1 }}>
                         <div className="box">
                           <h3 className="title">
-                          Word Count:{" "}
-                          {
-                            this.state.editorState
-                              .getCurrentContent()
-                              .getPlainText(" ")
-                              .split(" ").length
-                          }
+                            Word Count:{" "}
+                            {
+                              this.state.editorState
+                                .getCurrentContent()
+                                .getPlainText(" ")
+                                .split(" ").length
+                            }
                           </h3>
                           <button
                             className="button is-primary is-rounded"
@@ -214,25 +225,22 @@ export default class HomeScreen extends Component {
                         <div className="box">
                           <h3 className="title">Sentiment Analysis</h3>
                           <button
-                           className="button is-primary is-rounded"
-                           type="button"
-                           onClick={this.analyzePost}
+                            className="button is-primary is-rounded"
+                            type="button"
+                            onClick={this.analyzePost}
                           >
                             Perform Sentiment Analysis
                           </button>
                           <p>
-                            Sentiment: 
+                            Sentiment:
                             <span className="icon">
-                              {
-                                (() => {
-                                    if(this.state.sentiment === 'positive')
-                                      return (<i className="far fa-smile"></i>)
-                                    if(this.state.sentiment === 'neutral')
-                                      return (<i className="far fa-neutral"></i>)
-                                    else
-                                      return (<i className="far fa-frawn"></i>)
-                                })()
-                              }
+                              {(() => {
+                                if (this.state.sentiment === "positive")
+                                  return <i className="far fa-smile" />;
+                                if (this.state.sentiment === "neutral")
+                                  return <i className="far fa-neutral" />;
+                                else return <i className="far fa-frawn" />;
+                              })()}
                             </span>
                           </p>
                           <center>
@@ -328,9 +336,7 @@ export default class HomeScreen extends Component {
                               loading={this.state.areKeywordsLoading}
                             />
                           </center>
-                          <div className="tags">
-                            {keywordsList}
-                          </div>
+                          <div className="tags">{keywordsList}</div>
                         </div>
                       </div>
                     </div>
