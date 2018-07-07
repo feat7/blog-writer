@@ -1,6 +1,6 @@
 {
-  "name": "fullstack-challenge",
-  "homepage": "./",
+  "name": "blog-writer-react",
+  "homepage": "http://feat7.github.io/blog-writer-react",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,6 +30,7 @@
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "predeploy": "npm-run-all build-css build-js",
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {

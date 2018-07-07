@@ -38,7 +38,7 @@ export default class HomeScreen extends Component {
         <div className="hero">
           <div className="hero-body">
             <div className="container">
-              Total words: {this.state.wordCount}
+              Total words: {this.state.wordCount - 1}
               <div className="content">
                 <Editor
                   ref="editor"
