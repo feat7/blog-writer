@@ -4,7 +4,7 @@ import createBrowserHistory from "history/createBrowserHistory";
 import MainRoutes from "./routes/MainRoutes";
 import { Provider } from "mobx-react";
 import { syncHistoryWithStore } from "mobx-react-router";
-import Gun from "gun/gun";
+import Gun from "gun";
 import store from "./stores";
 import "./styles/styles.css";
 
@@ -14,7 +14,7 @@ const history = syncHistoryWithStore(browserHistory, store.routing);
 class App extends Component {
   constructor() {
     super();
-    this.gun = Gun(window.location.origin + "/gun");
+    this.gun = Gun("http://p2p-app-gun.herokuapp.com/gun");
   }
   render() {
     return (
