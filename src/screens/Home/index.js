@@ -59,6 +59,7 @@ export default class HomeScreen extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.suggestKeywords = this.suggestKeywords.bind(this);
+    this.clearTopTen = this.clearTopTen.bind(this);
   }
 
   handleChange(event){
@@ -99,6 +100,10 @@ export default class HomeScreen extends Component {
       )
   }
 
+  clearTopTen(){
+    this.setState({topTenKeywords: []});
+  }
+
   componentWillMount() {
     this.props.gun
       .get("blogContent")
@@ -114,14 +119,14 @@ export default class HomeScreen extends Component {
 
   render() {
     var keywordsList = this.state.topTenKeywords.map((keyword, index) =>
-      <li className="list-group-item" key={index}>
+      <li key={index}>
         {keyword.keyword}
       </li>
     );
     return (
       <div>
-        <div className="row">
-          <div className="col-8">
+        <div className="columns">
+          <div className="column is-two-thirds">
             <div className="hero">
               <div className="hero-body">
                 <div className="columns">
@@ -142,10 +147,10 @@ export default class HomeScreen extends Component {
               </div>
             </div>
           </div>
-          <div className="col-4">
+          <div className="column is-one-third">
             <div className="sideNavigator">
               <div className="card">
-                <div className="card-body">
+                <div className="card-content">
                   <div className="box">
                     Word Count: {this.state.wordCount}
                   </div>
@@ -154,16 +159,16 @@ export default class HomeScreen extends Component {
                     <div className="input-group mb-3">
                       <input name="keyword" type="text" className="form-control" placeholder="Type a Keyword" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={this.handleChange} />
                       <div className="input-group-append">
-                        <button className="btn btn-outline-secondary" type="button" onClick={this.suggestKeywords}>
+                        <button className="button btn-outline-secondary" type="button" onClick={this.suggestKeywords}>
                           Search
                         </button>
                       </div>
                     </div>
                     Total Suggested Keywords: {this.state.suggestedKeywords.length}
                     <br />
-                    <p>Filter Keywords on the basis of </p>
-                    <div className="row">
-                      <div className="col-4">
+                    <p>Filter Keywords on the basis of <button type="button" className="button btn-outline-warning" onClick={this.clearTopTen} >Clear</button></p>
+                    <div className="columns">
+                      <div className="column">
                         <div className="form-check">
                           <input className="form-check-input" type="radio" name="filterMode" id="cpc" value="cpc" defaultChecked onChange={this.handleChange} />
                           <label className="form-check-label">
@@ -171,7 +176,7 @@ export default class HomeScreen extends Component {
                           </label>
                         </div>
                       </div>
-                      <div className="col-4">
+                      <div className="column">
                         <div className="form-check">
                           <input className="form-check-input" type="radio" name="filterMode" id="volume" value="Volume" onChange={this.handleChange} />
                           <label className="form-check-label">
@@ -179,7 +184,7 @@ export default class HomeScreen extends Component {
                           </label>
                         </div>
                       </div>
-                      <div className="col-4">
+                      <div className="column is-half">
                         <div className="form-check">
                           <input className="form-check-input" type="radio" name="filterMode" id="competition" value="Competition" onChange={this.handleChange} />
                           <label className="form-check-label">
@@ -189,9 +194,11 @@ export default class HomeScreen extends Component {
                       </div>
                     </div>
                     <br />
-                    <ul className="list-group">
-                      {keywordsList}
-                    </ul>
+                    <div className="container">
+                      <ol>
+                        {keywordsList}
+                      </ol>
+                    </div>
                   </div>
                 </div>
               </div>
