@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 
 import { Editor, createEditorState } from "medium-draft";
-// import { convertToRaw } from "draft-js";
+import { convertToRaw, convertFromRaw } from "draft-js";
 
 // import mediumDraftExporter from "medium-draft/lib/exporter";
 
-@inject("store")
+let editorData = createEditorState(),
+  wordCount;
+
+@inject("store", "gun")
 @observer
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -19,13 +22,42 @@ export default class HomeScreen extends Component {
 
     this.onChange = editorState => {
       this.setState({
-        editorState,
+        editorState
+      });
+
+      this.props.gun.get("blogContent").put({
+        blogContent: JSON.stringify(
+          convertToRaw(this.state.editorState.getCurrentContent())
+        ),
         wordCount: this.state.editorState
           .getCurrentContent()
           .getPlainText(" ")
-          .split(" ").length
+          .split(" ").length,
+        text: "Some random text"
       });
+
+      this.props.gun.get("blogContent").on((data, key) =>
+        // this.setState({
+        //   editorState: createEditorState(JSON.parse(data.blogContent))
+        // })
+        console.log(
+          createEditorState(JSON.parse(data.blogContent))
+            .getCurrentContent()
+            .getPlainText(" ")
+        )
+      );
+
+      // this.setState({ editorState: createEditorState(JSON.parse(editorData)) });
     };
+  }
+
+  componentWillMount() {
+    this.props.gun
+      .get("blogContent")
+      .on((data, key) => (editorData = data.blogContent));
+    this.props.gun
+      .get("blogContent")
+      .on((data, key) => console.log("-----------", data.text));
   }
 
   componentDidMount() {

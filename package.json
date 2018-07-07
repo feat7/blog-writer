@@ -9,6 +9,7 @@
     "client-persist": "^1.8.6",
     "custom-react-scripts": "^0.2.2",
     "draft-convert": "^2.1.2",
+    "gun": "^0.9.9993",
     "history": "^4.7.2",
     "medium-draft": "^0.5.6",
     "mobx": "^4.3.1",
